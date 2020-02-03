@@ -6,7 +6,7 @@ const telnyx_config = {
     // From DID
     telnyx_did: "+11234567890",
     // Parent's Phone Number
-    parent_number: "+11234567890"
+    target_number: "+11234567890"
 
 };
 

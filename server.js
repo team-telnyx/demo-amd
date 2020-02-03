@@ -31,7 +31,7 @@ const g_telnyx_api_auth_v2 = telnyx_auth.api;
 // Connection ID to place outbound Dial on
 const g_connection_id = telnyx_auth.connection_id;
 // Phone number we will try to connect with
-const g_parent_did = telnyx_auth.parent_number;
+const g_target_did = telnyx_auth.target_number;
 // Telnyx DID configured for this App in Mission Control
 const g_call_control_did = telnyx_auth.telnyx_did;
 
@@ -80,7 +80,8 @@ const call_control_dial = (
 	f_connection_id,
 	f_dest,
 	f_orig,
-	f_client_state_s
+	f_client_state_s,
+	f_amd
 ) => {
 	console.log(`[%s] LOG - DIAL! ${get_timestamp()}`);
 	var l_cc_action = "dial";
@@ -97,7 +98,7 @@ const call_control_dial = (
 			connection_id: f_connection_id,
 			to: f_dest,
 			from: f_orig,
-			answering_machine_detection: "detect_words"
+			answering_machine_detection: f_amd
 		}
 	};
 
@@ -169,18 +170,17 @@ const call_control_hangup = (f_post_headers, f_call_control_id) => {
 // ================================================    WEBHOOK API IVR   ================================================
 
 
-// GET - Make Sure we're Live: https://<your_webhook_url>:8081
+// GET - Make Sure we're Live: http://<your_webhook_url>:8081
 rest.get("/", (req, res) => {
 	res.send(`<h1>Telnyx APIv2 Follow Me Demo is Running!</h1>`);
 });
 
-// POST - Receive Number: https://<your_webhook_url>:8081/telnyx-amd
+// POST - Receive Number: http://<your_webhook_url>:8081/telnyx-amd
 rest.post(`/${g_appName}`, (req, res) => {
 	if (req && req.body && req.body.data.event_type) {
 		var l_hook_event_type = req.body.data.event_type;
 		var l_call_control_id = req.body.data.payload.call_control_id;
 		var l_client_state_64 = req.body.data.payload.client_state;
-		var l_call_state = req.body.data.payload.state;
 	} else {
 		console.log(`[%s] LOG - Invalid Webhook received! ${get_timestamp()}`);
 		res.end("0");
@@ -208,8 +208,8 @@ rest.post(`/${g_appName}`, (req, res) => {
 		call_control_speak(
 			g_post_headers,
 			l_call_control_id,
-			`This is a message from ABC123 School, Your Child has been Bad, Bad, Bad, and Has Detention`,
-			"Parent-Answer"
+			`This is a message from Don Corleone, Luca Brasi sleeps with the fishes`,
+			"Target-Answer"
 		);
 
 		res.end();
@@ -225,7 +225,7 @@ rest.post(`/${g_appName}`, (req, res) => {
 		call_control_speak(
 			g_post_headers,
 			l_call_control_id,
-			`This is a message from ABC123 School, Your Child has been Bad, Bad, Bad, and Has Detention`,
+			`This is a message for Don Corleone, Luca Brasi sleeps with the fishes`,
 			"Left-Message"
 		);
 
@@ -236,7 +236,7 @@ rest.post(`/${g_appName}`, (req, res) => {
 		// Webhook Call Speak Started >> Do Nothing
 	} else if (l_hook_event_type == "call.speak.started") {
 		res.end();
-		// Webhook Call Hangup >>  Log Left Message/Reached Parent
+		// Webhook Call Hangup >>  Log Left Message/Reached Target
 	} else if (l_hook_event_type == "call.hangup") {
 		console.log(
 			`[%s] LOG - OUTCOME - ${Buffer.from(l_client_state_64, "base64").toString(
@@ -276,7 +276,8 @@ rest.listen(PORT, () => {
 call_control_dial(
 	g_post_headers,
 	g_connection_id,
-	g_parent_did,
+	g_target_did,
 	g_call_control_did,
-	"stage-dial"
+	"stage-dial",
+	"detect_words"
 );
