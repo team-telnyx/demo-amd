@@ -428,7 +428,7 @@ And start the application by executing the following command:
 $ npm run dev
 ```
 
-##  Expected Logging - When a message is left
+##  What's going on in the log?- When a message is left
 
 ```
 [%s] LOG - DIAL! utc|2020/2/4|13:3:37:985
@@ -438,8 +438,8 @@ SERVER utc|2020/2/4|13:3:37:992 -  app listening at http://localhost:8081/telnyx
 {
   data: {
     call_control_id: null,
-    call_leg_id: '0d02f05a-4781-11ea-be6c-02420a0f6d68',
-    call_session_id: '0cfdca3a-4781-11ea-b4ae-02420a0f6d68',
+    call_leg_id: '1234abcd-1010-01aa-001b-1234abcd678',
+    call_session_id: '4765qqtr-1234-0043-4783-0101rtebw2',
     is_alive: false,
     record_type: 'call'
   }
