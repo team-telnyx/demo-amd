@@ -428,7 +428,7 @@ And start the application by executing the following command:
 $ npm run dev
 ```
 
-##  What's going on in the log?- When a message is left
+##  Log Example - When a message is left
 
 ```
 [%s] LOG - DIAL! utc|2020/2/4|13:3:37:985
@@ -450,12 +450,21 @@ SERVER utc|2020/2/4|13:3:37:992 -  app listening at http://localhost:8081/telnyx
 [%s] DEBUG - Command Executed [%s] utc|2020/2/4|13:3:44:724 | speak
 
 { data: { result: 'ok' } }
+// We will always assume a human is answering and speak
 [%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:45:200 | call.speak.started
+
+// If the callee says >5 words, AMD detect_words will label as machine
 [%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:47:406 | call.machine.detection.ended
 [%s] LOG - Webhook received - amd result [%s] utc|2020/2/4|13:3:47:406 | machine
+
+// Labeled as machine, telnyx will stop the media stream
 [%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:47:541 | call.speak.ended
+
+// When a beep is detected, telnyx will send hook with call.machine.greeting.ended with result of beep_detected
 [%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:53:901 | call.machine.greeting.ended
 [%s] LOG - Webhook received - amd result [%s] utc|2020/2/4|13:3:53:901 | beep_detected
+
+// call.machine.greeting ended is this demos trigger to issue speak again
 [%s] LOG - SPEAK! utc|2020/2/4|13:3:53:901
 [%s] DEBUG - Command Executed [%s] utc|2020/2/4|13:3:54:136 | speak
 
