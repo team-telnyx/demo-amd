@@ -172,7 +172,7 @@ const call_control_hangup = (f_post_headers, f_call_control_id) => {
 
 // GET - Make Sure we're Live: http://<your_webhook_url>:8081
 rest.get("/", (req, res) => {
-	res.send(`<h1>Telnyx APIv2 Follow Me Demo is Running!</h1>`);
+	res.send(`<h1>Telnyx APIv2 AMD Demo is Running!</h1>`);
 });
 
 // POST - Receive Number: http://<your_webhook_url>:8081/telnyx-amd

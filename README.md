@@ -428,5 +428,48 @@ And start the application by executing the following command:
 $ npm run dev
 ```
 
+##  Expected Logging - When a message is left
+
+```
+[%s] LOG - DIAL! utc|2020/2/4|13:3:37:985
+SERVER utc|2020/2/4|13:3:37:992 -  app listening at http://localhost:8081/telnyx-amd
+[%s] DEBUG - Command Executed [%s] utc|2020/2/4|13:3:38:351 | dial
+
+{
+  data: {
+    call_control_id: null,
+    call_leg_id: '0d02f05a-4781-11ea-be6c-02420a0f6d68',
+    call_session_id: '0cfdca3a-4781-11ea-b4ae-02420a0f6d68',
+    is_alive: false,
+    record_type: 'call'
+  }
+}
+[%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:38:488 | call.initiated
+[%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:44:453 | call.answered
+[%s] LOG - SPEAK! utc|2020/2/4|13:3:44:453
+[%s] DEBUG - Command Executed [%s] utc|2020/2/4|13:3:44:724 | speak
+
+{ data: { result: 'ok' } }
+[%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:45:200 | call.speak.started
+[%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:47:406 | call.machine.detection.ended
+[%s] LOG - Webhook received - amd result [%s] utc|2020/2/4|13:3:47:406 | machine
+[%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:47:541 | call.speak.ended
+[%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:53:901 | call.machine.greeting.ended
+[%s] LOG - Webhook received - amd result [%s] utc|2020/2/4|13:3:53:901 | beep_detected
+[%s] LOG - SPEAK! utc|2020/2/4|13:3:53:901
+[%s] DEBUG - Command Executed [%s] utc|2020/2/4|13:3:54:136 | speak
+
+{ data: { result: 'ok' } }
+[%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:54:720 | call.speak.started
+[%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:59:197 | call.speak.ended
+[%s] LOG - Hangup!" utc|2020/2/4|13:3:59:198
+[%s] DEBUG - Command Executed [%s] utc|2020/2/4|13:3:59:482 | hangup
+
+{ data: { result: 'ok' } }
+[%s] LOG - Webhook received - event_type [%s] utc|2020/2/4|13:3:59:645 | call.hangup
+[%s] LOG - OUTCOME - Left-Message
+
+```
+
 
 
